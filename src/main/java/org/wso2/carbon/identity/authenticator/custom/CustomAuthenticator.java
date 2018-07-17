@@ -113,13 +113,17 @@ public class CustomAuthenticator extends AbstractApplicationAuthenticator implem
 
         Map<ClaimMapping, String> claims = new HashMap<ClaimMapping, String>();
         String username = request.getParameter("username");
-        claims.put(ClaimMapping.build("login", "login", null,false), username);
+        claims.put(ClaimMapping.build("login", "", null,false), username);
+        claims.put(ClaimMapping.build("email", "", null,false), "abc@local.local");
+        claims.put(ClaimMapping.build("phone", "", null,false), "0976815127");
 
         log.info("--------------- CustomAuthenticatorFederated: login is " + username + " -----------------------");
 
         AuthenticatedUser authenticatedUserObj = AuthenticatedUser.createFederateAuthenticatedUserFromSubjectIdentifier(username);
         authenticatedUserObj.setAuthenticatedSubjectIdentifier(username);
         authenticatedUserObj.setUserAttributes(claims);
+        authenticatedUserObj.setFederatedUser(true);
+        authenticatedUserObj.setUserName(username);
         context.setSubject(authenticatedUserObj);
     }
 
